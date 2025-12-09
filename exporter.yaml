@@ -1,0 +1,3 @@
+# StrongSwan Exporter Configuration
+# Path to StrongSwan VICI socket
+vici_socket: "/var/run/charon.vici"
