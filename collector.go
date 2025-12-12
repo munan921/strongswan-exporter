@@ -99,9 +99,9 @@ func (c *StrongSwanCollector) Collect(ch chan<- prometheus.Metric) {
 	}
 
 	sessionCount := 0
-	for {
-		msg := sasMsg.Messages()
-
+	messages := sasMsg.Messages()
+	
+	for _, msg := range messages {
 		for _, sa := range msg.Keys() {
 			sessionCount++
 

@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/strongswan/govici/vici"
@@ -53,12 +52,9 @@ func getSessions(config *Config) ([]Session, error) {
 		return nil, fmt.Errorf("error listing SAs: %w", err)
 	}
 
-	for {
-		msg, err := sasMsg.Messages()
-		if err != nil {
-			break
-		}
-
+	messages := sasMsg.Messages()
+	
+	for _, msg := range messages {
 		for _, saName := range msg.Keys() {
 			saData, ok := msg.Get(saName).(map[string]interface{})
 			if !ok {
@@ -109,7 +105,7 @@ func getSessions(config *Config) ([]Session, error) {
 
 			// Process child SAs for traffic statistics and virtual IPs
 			if childSAs, ok := saData["child-sas"].(map[string]interface{}); ok {
-				for childName, childData := range childSAs {
+				for _, childData := range childSAs {
 					if child, ok := childData.(map[string]interface{}); ok {
 						sess := Session{
 							Server:      hostname,
